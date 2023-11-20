@@ -26,5 +26,5 @@ jobs:
           key: ${{ secrets.WEB_SERVER_SSH_KEY }}
           script: |
             # Команды, которые выполнятся на сервере
-            cd /var/www/html
+            cd /var/www/filya
             git pull origin develop
