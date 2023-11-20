@@ -1,0 +1,30 @@
+name: CI/CD deploy to web server
+
+# Ветка, в которую нужно произвести push
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  # Выполнение на последней версии ubuntu
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Проверка репозитория
+      - name: Repository check
+        uses: actions/checkout@v2
+
+      # Выполнение deploy на удаленный веб сервер
+      - name: Deploy to web
+        uses: appleboy/ssh-action@master
+        with:
+        # Для безопасности проекта испрользуем секретные ключи
+          host: ${{ secrets.WEB_SERVER_HOST }} 
+          username: ${{ secrets.WEB_SERVER_USERNAME }}
+          key: ${{ secrets.WEB_SERVER_SSH_KEY }}
+          script: |
+            # Команды, которые выполнятся на сервере
+            cd /var/www/html
+            git pull origin develop
